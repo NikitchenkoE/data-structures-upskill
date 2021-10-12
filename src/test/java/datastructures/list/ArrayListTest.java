@@ -15,7 +15,7 @@ class ArrayListTest {
             arrayList.add(String.format("%s", i), i);
         }
 
-        assertEquals(arrayList.get(0), "0");
+        assertEquals("0", arrayList.get(0));
         assertTrue(arrayList.contains("6500"));
     }
 
@@ -24,7 +24,7 @@ class ArrayListTest {
         for (int i = 0; i < 10000; i++) {
             arrayList.add(String.format("%s", i), i);
         }
-        assertEquals(arrayList.get(0), "0");
+        assertEquals("0", arrayList.get(0));
     }
 
     @Test
@@ -49,8 +49,8 @@ class ArrayListTest {
             arrayList.add(String.format("%s", i), i);
         }
 
-        assertEquals(arrayList.get(150), "150");
-        assertNotEquals(arrayList.get(150), "166");
+        assertEquals("150", arrayList.get(150));
+        assertNotEquals("166", arrayList.get(150));
     }
 
     @Test
@@ -59,8 +59,8 @@ class ArrayListTest {
             arrayList.add(String.format("%s", i), i);
         }
         arrayList.set("Hello", 28);
-        assertNotEquals(arrayList.get(28), "28");
-        assertEquals(arrayList.get(28), "Hello");
+        assertNotEquals("28", arrayList.get(28));
+        assertEquals("Hello", arrayList.get(28));
     }
 
     @Test
@@ -69,7 +69,7 @@ class ArrayListTest {
             arrayList.add(String.format("%s", i), i);
         }
 
-        assertEquals(arrayList.get(2558), "2558");
+        assertEquals("2558", arrayList.get(2558));
         arrayList.clear();
         assertTrue(arrayList.isEmpty());
     }
@@ -106,7 +106,7 @@ class ArrayListTest {
         arrayList.add("B");
         arrayList.add("C");
         arrayList.add("A");
-        assertEquals(arrayList.lastIndexOf("A"), 3);
+        assertEquals(3, arrayList.lastIndexOf("A"));
     }
 
     @Test
@@ -117,18 +117,18 @@ class ArrayListTest {
         arrayList.add("A");
 
         arrayList.remove(0);
-        assertNotEquals("A",arrayList.get(0));
-        assertEquals("B",arrayList.get(0));
-        assertEquals(3,arrayList.size());
+        assertNotEquals("A", arrayList.get(0));
+        assertEquals("B", arrayList.get(0));
+        assertEquals(3, arrayList.size());
     }
 
     @Test
-    void toStringTest(){
+    void toStringTest() {
         arrayList.add("A");
         arrayList.add(null);
         arrayList.add("C");
         arrayList.add("A");
         String expectedStr = "[A, null, C, A]";
-        assertEquals(expectedStr,arrayList.toString());
+        assertEquals(expectedStr, arrayList.toString());
     }
 }
