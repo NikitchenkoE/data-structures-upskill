@@ -47,8 +47,6 @@ public class ArrayList implements List {
     public Object set(Object value, int index) {
         if (index < 0 || index > size - 1) {
             throw new IndexOutOfBoundsException(String.format("Index < 0 and > size-1, size-1 = %s", size - 1));
-        } else if (size == array.length - 1) {
-            growth();
         }
         Object oldValue = array[index];
         array[index] = value;
