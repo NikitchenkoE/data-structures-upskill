@@ -31,6 +31,9 @@ public class ArrayList implements List {
         } else if (size == array.length - 1) {
             growth();
         }
+        if (size - index >= 0) {
+            System.arraycopy(array, index, array, index + 1, size - index);
+        }
         array[index] = value;
         size++;
     }
