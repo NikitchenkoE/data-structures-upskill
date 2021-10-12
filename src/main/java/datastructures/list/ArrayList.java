@@ -101,7 +101,7 @@ public class ArrayList implements List {
 
     @Override
     public int lastIndexOf(Object value) {
-        for (int i = size-1; i >= 0; i--) {
+        for (int i = size - 1; i >= 0; i--) {
             if (array[i].equals(value)) {
                 return i;
             }
@@ -119,16 +119,10 @@ public class ArrayList implements List {
         return array;
     }
 
-    private void growth() {
-        Object[] newArray = new Object[array.length * 2];
-        System.arraycopy(array, 0, newArray, 0, size);
-        array = newArray;
-    }
-
     @Override
     public String toString() {
 
-        int iMax = size-1;
+        int iMax = size - 1;
         if (iMax == -1)
             return "[]";
 
@@ -140,5 +134,11 @@ public class ArrayList implements List {
                 return stringBuilder.append(']').toString();
             stringBuilder.append(", ");
         }
+    }
+
+    private void growth() {
+        Object[] newArray = new Object[array.length * 2];
+        System.arraycopy(array, 0, newArray, 0, size);
+        array = newArray;
     }
 }
