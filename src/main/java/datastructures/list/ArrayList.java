@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class ArrayList implements List {
     private static final int DEFAULT_CAPACITY = 16;
     private int size = 0;
-    Object[] array;
+    private Object[] array;
 
     public ArrayList() {
         this(DEFAULT_CAPACITY);
