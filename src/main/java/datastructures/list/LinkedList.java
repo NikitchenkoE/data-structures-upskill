@@ -25,9 +25,8 @@ public class LinkedList implements List {
     @Override
     public void add(Object value, int index) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException(String.format("Index < 0 and > size-1, size-1 = %s", size - 1));
+            throw new IndexOutOfBoundsException(String.format("Index < 0 and > size, size = %s", size));
         }
-
         if (head == null) {
             head = tail = new Node(value, null, null);
             size++;
@@ -52,8 +51,7 @@ public class LinkedList implements List {
             listObject.prev = head;
             size++;
             return;
-        }else
-        if (listObject.prev != null) {
+        } else if (listObject.prev != null) {
             Node newNode = new Node(value, listObject.prev, listObject);
             listObject.prev.next = newNode;
             listObject.prev = newNode;
@@ -63,12 +61,15 @@ public class LinkedList implements List {
 
     @Override
     public Object remove(int index) {
-        if (index < 0 || index > size - 1) {
-            throw new IndexOutOfBoundsException(String.format("Index < 0 and > size-1, size-1 = %s", size - 1));
-        }
+        exceptionChecker(index);
+
         Node listObject = find(index);
         if (index == 0) {
+            listObject.next.prev=null;
             head = listObject.next;
+        } else if (index == size-1) {
+            listObject.prev.next = null;
+            tail = listObject.prev;
         } else {
             listObject.prev.next = listObject.next;
             listObject.next.prev = listObject.prev;
@@ -79,17 +80,14 @@ public class LinkedList implements List {
 
     @Override
     public Object get(int index) {
-        if (index < 0 || index > size - 1) {
-            throw new IndexOutOfBoundsException(String.format("Index < 0 and > size-1, size-1 = %s", size - 1));
-        }
+        exceptionChecker(index);
+
         return find(index).value;
     }
 
     @Override
     public Object set(Object value, int index) {
-        if (index < 0 || index > size - 1) {
-            throw new IndexOutOfBoundsException(String.format("Index < 0 and > size-1, size-1 = %s", size - 1));
-        }
+        exceptionChecker(index);
 
         if (index <= size / 2) {
             Node first = head;
@@ -139,7 +137,7 @@ public class LinkedList implements List {
             }
         } else
             for (int i = 0; i < size; i++) {
-                if (first.value==value) {
+                if (first.value == value) {
                     result = true;
                     break;
                 }
@@ -229,6 +227,12 @@ public class LinkedList implements List {
                 last = last.prev;
             }
             return last;
+        }
+    }
+
+    private void exceptionChecker(int index){
+        if (index < 0 || index > size - 1) {
+            throw new IndexOutOfBoundsException(String.format("Index < 0 and > size-1, size-1 = %s", size - 1));
         }
     }
 }
