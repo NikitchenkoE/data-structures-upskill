@@ -7,38 +7,58 @@ public class LinkedList implements List {
 
     @Override
     public void add(Object value) {
-        Node last = tail;
-        Node newNode = new Node(value);
-        tail = newNode;
-        if (last == null) {
-            head = newNode;
-            size++;
-        } else {
-            last.next = newNode;
-            newNode.prev = last;
-            size++;
-        }
+//        Node last = tail;
+//        Node newNode = new Node(value);
+//        tail = newNode;
+//        if (last == null) {
+//            head = newNode;
+//            size++;
+//        } else {
+//            last.next = newNode;
+//            newNode.prev = last;
+//            size++;
+//        }
+        add(value, size);
+
     }
 
     @Override
     public void add(Object value, int index) {
-        if (index < 0 || index > size - 1) {
+        if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException(String.format("Index < 0 and > size-1, size-1 = %s", size - 1));
         }
-        Node newNode = new Node(value);
+
+        if (head == null) {
+            head = tail = new Node(value, null, null);
+            size++;
+            return;
+        } else if (head == tail) {
+            tail = new Node(value, head, null);
+            head.next = tail;
+            size++;
+            return;
+        } else if (index == size) {
+            Node newNode = new Node(value, tail, null);
+            tail.next = newNode;
+            tail = newNode;
+            size++;
+            return;
+        }
+
         Node listObject = find(index);
-        if (index == 0) {
-            head = newNode;
-            head.next=listObject;
+
+        if (listObject == head) {
+            head = new Node(value, null, listObject);
             listObject.prev = head;
             size++;
-        }else {
+            return;
+        }else
+        if (listObject.prev != null) {
+            Node newNode = new Node(value, listObject.prev, listObject);
             listObject.prev.next = newNode;
-            newNode.prev = listObject.prev;
             listObject.prev = newNode;
-            newNode.next = listObject;
-            size++;
         }
+        size++;
     }
 
     @Override
@@ -90,13 +110,6 @@ public class LinkedList implements List {
 
     @Override
     public void clear() {
-        for (Node first = head; first != null; ) {
-            Node next = first.next;
-            first.value = null;
-            first.next = null;
-            first.prev = null;
-            first = next;
-        }
         head = null;
         tail = null;
         size = 0;
@@ -140,17 +153,17 @@ public class LinkedList implements List {
     public int indexOf(Object value) {
         int index = -1;
         Node listObject = head;
-        if (value == null){
-            for (int i = 0; i < size; i++){
-                if (listObject.value==null){
+        if (value == null) {
+            for (int i = 0; i < size; i++) {
+                if (listObject.value == null) {
                     index = i;
                     break;
                 }
                 listObject = listObject.next;
             }
-        }else {
-            for (int i = 0; i < size; i++){
-                if (listObject.value.equals(value)){
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (listObject.value.equals(value)) {
                     index = i;
                     break;
                 }
@@ -164,17 +177,17 @@ public class LinkedList implements List {
     public int lastIndexOf(Object value) {
         int index = -1;
         Node listObject = tail;
-        if (value == null){
-            for (int i = size-1; i >=0; i--){
-                if (listObject.value==null){
+        if (value == null) {
+            for (int i = size - 1; i >= 0; i--) {
+                if (listObject.value == null) {
                     index = i;
                     break;
                 }
                 listObject = listObject.prev;
             }
-        }else {
-            for (int i = size-1; i >=0; i--){
-                if (listObject.value==value){
+        } else {
+            for (int i = size - 1; i >= 0; i--) {
+                if (listObject.value == value) {
                     index = i;
                     break;
                 }
@@ -185,7 +198,7 @@ public class LinkedList implements List {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         Node first = head;
         int iMax = size - 1;
         if (iMax == -1)

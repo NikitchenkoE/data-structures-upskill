@@ -9,39 +9,83 @@ class LinkedListTest {
     LinkedList linkedList = new LinkedList();
     @BeforeEach
     void before(){
+        linkedList.add("0");
+        linkedList.add("1");
         linkedList.add("2");
-        linkedList.add("5");
-        linkedList.add("9");
-        linkedList.add("8");
-        linkedList.add("2");
+        linkedList.add("3");
+        linkedList.add("4");
         linkedList.add("5");
         linkedList.add("6");
         linkedList.add(null);
-        linkedList.add("7");
+        linkedList.add("8");
 
     }
 
     @Test
-    void add() {
-        assertEquals("5",linkedList.get(1));
+    void add_NumberInList_True() {
+        assertEquals("1",linkedList.get(1));
         assertEquals("5",linkedList.get(5));
         assertEquals(null,linkedList.get(7));
     }
 
     @Test
-    void testAdd() {
-        String testMessage = "NewObject";
-        int newSize = linkedList.size()+1;
-        linkedList.add(testMessage,1);
+    void add_SizeChanged_True() {
+        linkedList.add(1);
+        linkedList.add(1);
+        linkedList.add(1);
+        assertEquals(12,linkedList.size());
+    }
+
+    @Test
+    void addNumberWithIndex_Exception_ExpectException(){
         Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> {
             linkedList.remove(101);
         });
-        String expectedMessage = "Index < 0 and > size-1, size-1 = 6";
-
-        assertEquals(testMessage,linkedList.get(1));
-        assertEquals(newSize,linkedList.size());
         String actualMessage = exception.getMessage();
+        String expectedMessage = "Index < 0 and > size-1, size-1 = 8";
+        assertEquals(expectedMessage,actualMessage);
+    }
 
+    @Test
+    void addNumberWithIndex_AddInStartOfList_True(){
+        String testMessage = "testMessage";
+        linkedList.add(testMessage,0);
+        assertEquals(testMessage,linkedList.get(0));
+    }
+
+    @Test
+    void addNumberWithIndex_AddInEndOfList_True(){
+        String testMessage = "testMessage";
+        linkedList.add(testMessage,7);
+        assertEquals(testMessage,linkedList.get(7));
+    }
+
+    @Test
+    void addNumberWithIndex_AddInMiddleOfList_True(){
+        String testMessage = "testMessage";
+        linkedList.add(testMessage,4);
+        assertEquals(testMessage,linkedList.get(4));
+    }
+
+    @Test
+    void addNumberWithIndex_SizeChangedStart_True(){
+        String testMessage = "testMessage";
+        linkedList.add(testMessage,0);
+        assertEquals(10,linkedList.size());
+    }
+
+    @Test
+    void addNumberWithIndex_SizeChangedMiddle_True() {
+        String testMessage = "testMessage";
+        linkedList.add(testMessage, 4);
+        assertEquals(10, linkedList.size());
+    }
+
+    @Test
+    void addNumberWithIndex_SizeChangedEnd_True() {
+        String testMessage = "testMessage";
+        linkedList.add(testMessage, 8);
+        assertEquals(10, linkedList.size());
     }
 
     @Test
