@@ -156,26 +156,47 @@ class LinkedListTest {
     @Test
     void contains() {
         assertTrue(linkedList.contains("5"));
+        assertTrue(linkedList.contains("8"));
+        assertTrue(linkedList.contains(null));
+    }
+
+    @Test
+    void contains_TestFindInStartOfList_True(){
+        assertTrue(linkedList.contains("0"));
+    }
+
+    @Test
+    void contains_TestFindInMiddleOfList_True(){
+        assertTrue(linkedList.contains("0"));
+    }
+
+    @Test
+    void contains_TestFindInEndOfList_True(){
+        assertTrue(linkedList.contains("8"));
+    }
+
+    @Test
+    void contains_TestFindNull_True(){
         assertTrue(linkedList.contains(null));
     }
 
     @Test
     void indexOf() {
-        assertEquals(1,linkedList.indexOf("5"));
+        assertEquals(0,linkedList.indexOf("0"));
         assertEquals(7, linkedList.indexOf(null));
     }
 
     @Test
     void lastIndexOf() {
-        assertEquals(5,linkedList.lastIndexOf("5"));
+        assertEquals(0,linkedList.lastIndexOf("0"));
         assertEquals(7, linkedList.lastIndexOf(null));
         assertEquals(6, linkedList.lastIndexOf("6"));
-        assertEquals(4, linkedList.lastIndexOf("2"));
+        assertEquals(4, linkedList.lastIndexOf("4"));
     }
 
     @Test
     void testToString(){
-        String expectedMessage = "[2, 5, 9, 8, 2, 5, 6, null, 7]";
+        String expectedMessage = "[0, 1, 2, 3, 4, 5, 6, null, 8]";
         assertEquals(expectedMessage,linkedList.toString());
     }
 }
