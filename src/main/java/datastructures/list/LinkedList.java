@@ -1,5 +1,7 @@
 package datastructures.list;
 
+import java.util.Objects;
+
 public class LinkedList implements List {
     private Node head;
     private Node tail;
@@ -149,50 +151,26 @@ public class LinkedList implements List {
 
     @Override
     public int indexOf(Object value) {
-        int index = -1;
-        Node listObject = head;
-        if (value == null) {
-            for (int i = 0; i < size; i++) {
-                if (listObject.value == null) {
-                    index = i;
-                    break;
-                }
-                listObject = listObject.next;
+        int index = 0;
+        for (Node thisNode = head; thisNode != null; index++) {
+            if (Objects.equals(value, thisNode.value)) {
+                return index;
             }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (listObject.value.equals(value)) {
-                    index = i;
-                    break;
-                }
-                listObject = listObject.next;
-            }
+            thisNode = thisNode.next;
         }
-        return index;
+        return -1;
     }
 
     @Override
     public int lastIndexOf(Object value) {
-        int index = -1;
-        Node listObject = tail;
-        if (value == null) {
-            for (int i = size - 1; i >= 0; i--) {
-                if (listObject.value == null) {
-                    index = i;
-                    break;
-                }
-                listObject = listObject.prev;
+        int index = size-1;
+        for (Node thisNode = tail; thisNode!=null;index--){
+            if (Objects.equals(value,thisNode.value)){
+                return index;
             }
-        } else {
-            for (int i = size - 1; i >= 0; i--) {
-                if (listObject.value == value) {
-                    index = i;
-                    break;
-                }
-                listObject = listObject.prev;
-            }
+            thisNode = thisNode.prev;
         }
-        return index;
+        return -1;
     }
 
     @Override
@@ -206,7 +184,7 @@ public class LinkedList implements List {
         stringBuilder.append('[');
 
         for (int i = 0; ; i++) {
-            stringBuilder.append(String.valueOf(first.value));
+            stringBuilder.append(first.value);
             first = first.next;
             if (i == iMax)
                 return stringBuilder.append(']').toString();

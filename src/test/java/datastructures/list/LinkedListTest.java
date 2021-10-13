@@ -201,17 +201,53 @@ class LinkedListTest {
     }
 
     @Test
-    void indexOf() {
+    void indexOf_IndexOfFirst_True(){
         assertEquals(0, linkedList.indexOf("0"));
+    }
+
+    @Test
+    void indexOf_IndexOfMiddle_True(){
+        assertEquals(4, linkedList.indexOf("4"));
         assertEquals(7, linkedList.indexOf(null));
+    }
+
+    @Test
+    void indexOf_IndexOfLast_True(){
+        assertEquals(8, linkedList.indexOf("8"));
+    }
+
+    @Test
+    void indexOf_NotPresent_True(){
+        assertEquals(-1, linkedList.indexOf("NotPresent"));
     }
 
     @Test
     void lastIndexOf() {
         assertEquals(0, linkedList.lastIndexOf("0"));
-        assertEquals(7, linkedList.lastIndexOf(null));
+//        assertEquals(7, linkedList.lastIndexOf(null));
         assertEquals(6, linkedList.lastIndexOf("6"));
         assertEquals(4, linkedList.lastIndexOf("4"));
+    }
+    @Test
+    void lastIndexOf_LastIndexOfFirst_True(){
+        assertEquals(0, linkedList.lastIndexOf("0"));
+    }
+
+    @Test
+    void lastIndexOf_LastIndexOfMiddle_True(){
+        assertEquals(6, linkedList.lastIndexOf("6"));
+        assertEquals(4, linkedList.lastIndexOf("4"));
+        assertEquals(7, linkedList.lastIndexOf(null));
+    }
+
+    @Test
+    void lastIndexOf_LastIndexOfLast_True(){
+        assertEquals(8, linkedList.lastIndexOf("8"));
+    }
+
+    @Test
+    void lastIndexOf_NotPresent_True(){
+        assertEquals(-1, linkedList.lastIndexOf("NotPresent"));
     }
 
     @Test
