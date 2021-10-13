@@ -163,6 +163,47 @@ class LinkedListTest {
     }
 
     @Test
+    void set_Exception_True(){
+        String testMessage = "NewObject";
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> {
+            linkedList.set(testMessage, 101);
+        });
+
+        String expectedMessage = "Index < 0 and > size-1, size-1 = 8";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void set_SetFirst_True(){
+        String testMessage = "NewObject";
+        linkedList.set(testMessage,0);
+
+        String expectedMessage = "[NewObject, 1, 2, 3, 4, 5, 6, null, 8]";
+
+        assertEquals(expectedMessage,linkedList.toString());
+    }
+
+    @Test
+    void set_SetMiddle_True(){
+        String testMessage = "NewObject";
+        linkedList.set(testMessage,4);
+
+        String expectedMessage = "[0, 1, 2, 3, NewObject, 5, 6, null, 8]";
+
+        assertEquals(expectedMessage,linkedList.toString());
+    }
+
+    @Test
+    void set_SetLast_True(){
+        String testMessage = "NewObject";
+        linkedList.set(testMessage,8);
+
+        String expectedMessage = "[0, 1, 2, 3, 4, 5, 6, null, NewObject]";
+        assertEquals(expectedMessage,linkedList.toString());
+    }
+
+    @Test
     void clear() {
         linkedList.clear();
         assertEquals(0, linkedList.size());
