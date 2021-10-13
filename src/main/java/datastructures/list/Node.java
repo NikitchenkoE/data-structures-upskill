@@ -9,9 +9,4 @@ public class Node {
     public Node(Object value) {
         this.value = value;
     }
-
-    public Node(Object value, Node prev) {
-        this.value = value;
-        this.prev = prev;
-    }
 }
