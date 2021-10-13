@@ -8,15 +8,16 @@ public class LinkedList implements List {
     @Override
     public void add(Object value) {
         Node last = tail;
-        Node newNode = new Node(value, tail);
+        Node newNode = new Node(value);
+        tail = newNode;
         if (last == null) {
             head = newNode;
             size++;
         } else {
             last.next = newNode;
+            newNode.prev = last;
             size++;
         }
-        tail = newNode;
     }
 
     @Override
@@ -24,7 +25,7 @@ public class LinkedList implements List {
         if (index < 0 || index > size - 1) {
             throw new IndexOutOfBoundsException(String.format("Index < 0 and > size-1, size-1 = %s", size - 1));
         }
-        Node newNode = new Node(value, tail);
+        Node newNode = new Node(value);
         Node listObject = find(index);
         if (index == 0) {
             head = newNode;
