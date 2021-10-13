@@ -67,9 +67,9 @@ public class LinkedList implements List {
 
         Node listObject = find(index);
         if (index == 0) {
-            listObject.next.prev=null;
+            listObject.next.prev = null;
             head = listObject.next;
-        } else if (index == size-1) {
+        } else if (index == size - 1) {
             listObject.prev.next = null;
             tail = listObject.prev;
         } else {
@@ -163,9 +163,9 @@ public class LinkedList implements List {
 
     @Override
     public int lastIndexOf(Object value) {
-        int index = size-1;
-        for (Node thisNode = tail; thisNode!=null;index--){
-            if (Objects.equals(value,thisNode.value)){
+        int index = size - 1;
+        for (Node thisNode = tail; thisNode != null; index--) {
+            if (Objects.equals(value, thisNode.value)) {
                 return index;
             }
             thisNode = thisNode.prev;
@@ -208,9 +208,26 @@ public class LinkedList implements List {
         }
     }
 
-    private void exceptionChecker(int index){
+    private void exceptionChecker(int index) {
         if (index < 0 || index > size - 1) {
             throw new IndexOutOfBoundsException(String.format("Index < 0 and > size-1, size-1 = %s", size - 1));
         }
+    }
+}
+
+class Node {
+    Object value;
+
+    Node prev;
+    Node next;
+
+    public Node(Object value) {
+        this.value = value;
+    }
+
+    public Node(Object value, Node prev, Node next) {
+        this.value = value;
+        this.prev = prev;
+        this.next = next;
     }
 }
