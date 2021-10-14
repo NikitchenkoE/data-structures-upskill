@@ -2,7 +2,6 @@ package datastructures.map;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HashMap implements Map {
     private ArrayList[] buckets;

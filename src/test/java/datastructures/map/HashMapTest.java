@@ -1,6 +1,5 @@
 package datastructures.map;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,9 +32,7 @@ class HashMapTest {
 
     @Test
     void put_KeyNull_Exception() {
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            hashMap.put(null, 101);
-        });
+        Exception exception = assertThrows(NullPointerException.class, () -> hashMap.put(null, 101));
         String expectedMessage = "Key shouldn`t be equal null";
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -104,9 +101,7 @@ class HashMapTest {
 
     @Test
     void get_KeyNotNullException_Exception() {
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            hashMap.get(null);
-        });
+        Exception exception = assertThrows(NullPointerException.class, () -> hashMap.get(null));
         String expectedMessage = "Key shouldn`t be equal null";
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -160,18 +155,14 @@ class HashMapTest {
 
     @Test
     void containsKey_KeyNotNull_Exception() {
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            hashMap.containsKey(null);
-        });
+        Exception exception = assertThrows(NullPointerException.class, () -> hashMap.containsKey(null));
         String expectedMessage = "Key shouldn`t be equal null";
         assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
     void remove_KeyNotNull_Exception() {
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            hashMap.remove(null);
-        });
+        Exception exception = assertThrows(NullPointerException.class, () -> hashMap.remove(null));
         String expectedMessage = "Key shouldn`t be equal null";
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -217,7 +208,7 @@ class HashMapTest {
 
         assertEquals(1, hashMap.remove(1));
         assertEquals(2, hashMap.remove(2));
-        assertEquals(null, hashMap.remove(12));
+        assertNull(hashMap.remove(12));
         assertEquals(1500, hashMap.remove(6));
     }
 }

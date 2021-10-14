@@ -26,7 +26,7 @@ class LinkedListTest {
     void add_NumberInList_True() {
         assertEquals("1", linkedList.get(1));
         assertEquals("5", linkedList.get(5));
-        assertEquals(null, linkedList.get(7));
+        assertNull(linkedList.get(7));
     }
 
     @Test
@@ -39,9 +39,7 @@ class LinkedListTest {
 
     @Test
     void addNumberWithIndex_Exception_ExpectException() {
-        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> {
-            linkedList.add(101,101);
-        });
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> linkedList.add(101,101));
         String actualMessage = exception.getMessage();
         String expectedMessage = "Index < 0 and > size, size = 9";
         assertEquals(expectedMessage, actualMessage);
@@ -90,10 +88,8 @@ class LinkedListTest {
     }
 
     @Test
-    void remove_Exeption_True(){
-        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> {
-            linkedList.remove(101);
-        });
+    void remove_Exception_True(){
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> linkedList.remove(101));
         String expectedMessage = "Index < 0 and > size-1, size-1 = 8";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
@@ -136,10 +132,8 @@ class LinkedListTest {
     }
 
     @Test
-    void get_Exeption_True(){
-        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> {
-            linkedList.get(101);
-        });
+    void get_Exception_True(){
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> linkedList.get(101));
 
         String expectedMessage = "Index < 0 and > size-1, size-1 = 8";
         String actualMessage = exception.getMessage();
@@ -150,9 +144,7 @@ class LinkedListTest {
     @Test
     void set() {
         String testMessage = "NewObject";
-        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> {
-            linkedList.set(testMessage, 101);
-        });
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> linkedList.set(testMessage, 101));
 
         String expectedMessage = "Index < 0 and > size-1, size-1 = 8";
         String actualMessage = exception.getMessage();
@@ -165,9 +157,7 @@ class LinkedListTest {
     @Test
     void set_Exception_True(){
         String testMessage = "NewObject";
-        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> {
-            linkedList.set(testMessage, 101);
-        });
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> linkedList.set(testMessage, 101));
 
         String expectedMessage = "Index < 0 and > size-1, size-1 = 8";
         String actualMessage = exception.getMessage();
