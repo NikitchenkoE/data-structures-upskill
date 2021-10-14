@@ -9,19 +9,7 @@ public class LinkedList implements List {
 
     @Override
     public void add(Object value) {
-//        Node last = tail;
-//        Node newNode = new Node(value);
-//        tail = newNode;
-//        if (last == null) {
-//            head = newNode;
-//            size++;
-//        } else {
-//            last.next = newNode;
-//            newNode.prev = last;
-//            size++;
-//        }
         add(value, size);
-
     }
 
     @Override
