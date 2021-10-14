@@ -39,6 +39,9 @@ public class HashMap implements Map {
     public Object get(Object key) {
         keyNotNull(key);
         var bucket = buckets[findBucket(key)];
+        if (bucket==null){
+            return null;
+        }
         return findEntry(bucket, key);
     }
 
@@ -58,6 +61,9 @@ public class HashMap implements Map {
     public Object remove(Object key) {
         keyNotNull(key);
         ArrayList bucket = buckets[findBucket(key)];
+        if (bucket==null){
+            return null;
+        }
         return deleteEntry(bucket, key);
     }
 

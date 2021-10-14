@@ -107,6 +107,11 @@ class HashMapTest {
     }
 
     @Test
+    void get_NotPresentElement_Null(){
+        assertNull(hashMap.get(1));
+    }
+
+    @Test
     void size_SizeOfMap_True() {
         for (int i = 0; i < 1000; i++) {
             hashMap.put(i, i);
@@ -193,7 +198,7 @@ class HashMapTest {
     }
 
     @Test
-    void remove_ReturnValueDeletedElement_False() {
+    void remove_ReturnValueDeletedElement_True() {
         hashMap.put(1, 1);
         hashMap.put(1, 1);
         hashMap.put(2, 2);
@@ -210,5 +215,10 @@ class HashMapTest {
         assertEquals(2, hashMap.remove(2));
         assertNull(hashMap.remove(12));
         assertEquals(1500, hashMap.remove(6));
+    }
+
+    @Test
+    void remove_ReturnNullWhenRemoveNotPresentElement_Null(){
+        assertNull(hashMap.remove(1));
     }
 }
