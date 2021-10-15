@@ -2,6 +2,8 @@ package datastructures.list;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ArrayListTest {
@@ -130,5 +132,90 @@ class ArrayListTest {
         arrayList.add("A");
         String expectedStr = "[A, null, C, A]";
         assertEquals(expectedStr, arrayList.toString());
+    }
+
+    @Test
+    void iteratorNext_findNextElement_true(){
+        var iterator = arrayList.iterator();
+        arrayList.add(1);
+        arrayList.add(2);
+        arrayList.add(3);
+        assertEquals(1,iterator.next());
+        assertEquals(2,iterator.next());
+        assertEquals(3,iterator.next());
+    }
+
+    @Test
+    void interatorNext_NosuchElementExc_Exception(){
+        arrayList.add(1);
+        arrayList.add(1);
+        arrayList.add(1);
+
+        var iterator = arrayList.iterator();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+
+        Exception exception = assertThrows(NoSuchElementException.class, () -> {
+            iterator.next();
+        });
+
+        String expectedMessage = "No such element";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void iteratorHasNext_HasNextElement_True(){
+        var iterator = arrayList.iterator();
+        arrayList.add(1);
+        arrayList.add(1);
+        assertTrue(iterator.hasNext());
+    }
+
+    @Test
+    void iteratorHasNotNext_HasNextElement_False(){
+        var iterator = arrayList.iterator();
+        arrayList.add(1);
+        arrayList.add(1);
+        iterator.next();
+        assertFalse(iterator.hasNext());
+    }
+
+    @Test
+    void iteratorRemove_RemoveFirstElement_True(){
+        var iterator = arrayList.iterator();
+        arrayList.add(1);
+        arrayList.add(2);
+        arrayList.add(3);
+        String expectedMessage = "[2, 3]";
+        iterator.remove();
+        assertEquals(expectedMessage,arrayList.toString());
+    }
+
+    @Test
+    void iteratorRemove_RemoveMiddleElement_True(){
+        var iterator = arrayList.iterator();
+        arrayList.add(1);
+        arrayList.add(2);
+        arrayList.add(3);
+        String expectedMessage = "[1, 3]";
+        iterator.next();
+        iterator.remove();
+        assertEquals(expectedMessage,arrayList.toString());
+    }
+
+    @Test
+    void iteratorRemove_RemoveLastElement_True(){
+        var iterator = arrayList.iterator();
+        arrayList.add(1);
+        arrayList.add(2);
+        arrayList.add(3);
+        String expectedMessage = "[1, 2]";
+        iterator.next();
+        iterator.next();
+        iterator.remove();
+        assertEquals(expectedMessage,arrayList.toString());
     }
 }

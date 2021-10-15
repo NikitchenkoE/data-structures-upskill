@@ -1,8 +1,10 @@
 package datastructures.list;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class ArrayList implements List {
+public class ArrayList implements List,Iterable {
     private static final int DEFAULT_CAPACITY = 16;
     private int size = 0;
     private Object[] array;
@@ -31,7 +33,6 @@ public class ArrayList implements List {
         } else if (size == array.length - 1) {
             growth();
         }
-
         System.arraycopy(array, index, array, index + 1, size - index);
         array[index] = value;
         size++;
@@ -155,5 +156,39 @@ public class ArrayList implements List {
         Object[] newArray = new Object[array.length * 2];
         System.arraycopy(array, 0, newArray, 0, size);
         array = newArray;
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new Iterator(){
+        int present=0;
+            @Override
+            public boolean hasNext() {
+                return array[present+1]!=null;
+            }
+
+            @Override
+            public Object next() {
+                noSuchElement();
+
+                    var value = array[present];
+                    present++;
+                    return value;
+            }
+
+            @Override
+            public void remove() {
+                noSuchElement();
+                System.arraycopy(array, present + 1, array, present, array.length - 1 - present);
+                size--;
+            }
+
+            private void noSuchElement(){
+                if (array[present]==null) {
+                    throw new NoSuchElementException("No such element");
+                }
+            }
+
+        };
     }
 }
