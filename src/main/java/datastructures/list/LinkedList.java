@@ -116,25 +116,13 @@ public class LinkedList implements List {
     @Override
     public boolean contains(Object value) {
         Node first = head;
-        boolean result = false;
-        if (value == null) {
-            for (int i = 0; i < size; i++) {
-                if (first.value == null) {
-                    result = true;
-                    break;
-                }
-                first = first.next;
+        for (int i = 0; i < size; i++) {
+            if (first.value == value) {
+                return true;
             }
-        } else
-            for (int i = 0; i < size; i++) {
-                if (first.value == value) {
-                    result = true;
-                    break;
-                }
-                first = first.next;
-            }
-
-        return result;
+            first = first.next;
+        }
+        return false;
     }
 
     @Override

@@ -168,7 +168,6 @@ class LinkedListTest {
     void set_SetFirst_True(){
         String testMessage = "NewObject";
         linkedList.set(testMessage,0);
-
         String expectedMessage = "[NewObject, 1, 2, 3, 4, 5, 6, null, 8]";
 
         assertEquals(expectedMessage,linkedList.toString());
@@ -224,6 +223,11 @@ class LinkedListTest {
     @Test
     void contains_TestFindInEndOfList_True() {
         assertTrue(linkedList.contains("8"));
+    }
+
+    @Test
+    void contains_TestFindInEndOfList_False() {
+        assertFalse(linkedList.contains("22"));
     }
 
     @Test
