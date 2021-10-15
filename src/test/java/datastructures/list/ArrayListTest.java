@@ -35,9 +35,7 @@ class ArrayListTest {
             arrayList.add(String.format("%s", i), i);
         }
 
-        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> {
-            arrayList.add("105", 101);
-        });
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> arrayList.add("105", 101));
 
         String expectedMessage = "Index < 0 and > size, size = 100";
         String actualMessage = exception.getMessage();
@@ -146,7 +144,7 @@ class ArrayListTest {
     }
 
     @Test
-    void interatorNext_NosuchElementExc_Exception(){
+    void iteratorNext_NoSuchElementExc_Exception(){
         arrayList.add(1);
         arrayList.add(1);
         arrayList.add(1);
@@ -156,9 +154,7 @@ class ArrayListTest {
         iterator.next();
         iterator.next();
 
-        Exception exception = assertThrows(NoSuchElementException.class, () -> {
-            iterator.next();
-        });
+        Exception exception = assertThrows(NoSuchElementException.class, iterator::next);
 
         String expectedMessage = "No such element";
         String actualMessage = exception.getMessage();
