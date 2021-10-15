@@ -1,8 +1,9 @@
 package datastructures.list;
 
+import java.util.Iterator;
 import java.util.Objects;
 
-public class LinkedList implements List {
+public class LinkedList implements List, Iterable {
     private Node head;
     private Node tail;
     private int size = 0;
@@ -189,7 +190,50 @@ public class LinkedList implements List {
             throw new IndexOutOfBoundsException(String.format("Index < 0 and > size-1, size-1 = %s", size - 1));
         }
     }
+
+    @Override
+    public Iterator iterator() {
+        return new Iterator() {
+            Node current = head;
+
+            @Override
+            public boolean hasNext() {
+                return current.next != null;
+            }
+
+            @Override
+            public Object next() {
+                if (current != null) {
+                    Object value = current.value;
+                    current = current.next;
+                    return value;
+                }
+                return null;
+            }
+
+            public void remove() {
+                if (current == null) {
+                    return;
+                } else if (current.prev == null) {
+                    head = current.next;
+                    current.next.prev = null;
+                    current = head;
+                } else if (current.next == null) {
+                    tail = current.prev;
+                    current.prev.next = null;
+                    current = tail;
+                } else {
+                    Node newCurrent = current.next;
+                    current.prev.next = current.next;
+                    current.next.prev = current.prev;
+                    current = newCurrent;
+                }
+                size--;
+            }
+        };
+    }
 }
+
 
 class Node {
     Object value;

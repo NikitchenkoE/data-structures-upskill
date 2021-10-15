@@ -3,6 +3,8 @@ package datastructures.list;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class LinkedListTest {
@@ -39,7 +41,7 @@ class LinkedListTest {
 
     @Test
     void addNumberWithIndex_Exception_ExpectException() {
-        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> linkedList.add(101,101));
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> linkedList.add(101, 101));
         String actualMessage = exception.getMessage();
         String expectedMessage = "Index < 0 and > size, size = 9";
         assertEquals(expectedMessage, actualMessage);
@@ -88,7 +90,7 @@ class LinkedListTest {
     }
 
     @Test
-    void remove_Exception_True(){
+    void remove_Exception_True() {
         Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> linkedList.remove(101));
         String expectedMessage = "Index < 0 and > size-1, size-1 = 8";
         String actualMessage = exception.getMessage();
@@ -96,43 +98,44 @@ class LinkedListTest {
     }
 
     @Test
-    void remove_FromStartOfList_True(){
+    void remove_FromStartOfList_True() {
         linkedList.remove(0);
-        assertEquals("1",linkedList.get(0));
-        assertEquals(8,linkedList.size());
+        assertEquals("1", linkedList.get(0));
+        assertEquals(8, linkedList.size());
     }
 
     @Test
-    void remove_FromMiddleOfList_True(){
+    void remove_FromMiddleOfList_True() {
         linkedList.remove(4);
-        assertEquals("5",linkedList.get(4));
-        assertEquals(8,linkedList.size());
+        assertEquals("5", linkedList.get(4));
+        assertEquals(8, linkedList.size());
     }
 
     @Test
-    void remove_FromEndOfList_True(){
+    void remove_FromEndOfList_True() {
         linkedList.remove(8);
         assertNull(linkedList.get(7));
-        assertEquals(8,linkedList.size());
+        assertEquals(8, linkedList.size());
     }
-
 
 
     @Test
     void get_FromStartOfList_True() {
         assertEquals("0", linkedList.get(0));
     }
+
     @Test
     void get_FromEndOfList_True() {
         assertEquals("8", linkedList.get(8));
     }
+
     @Test
     void get_FromMiddleOfList_True() {
         assertEquals("4", linkedList.get(4));
     }
 
     @Test
-    void get_Exception_True(){
+    void get_Exception_True() {
         Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> linkedList.get(101));
 
         String expectedMessage = "Index < 0 and > size-1, size-1 = 8";
@@ -155,7 +158,7 @@ class LinkedListTest {
     }
 
     @Test
-    void set_Exception_True(){
+    void set_Exception_True() {
         String testMessage = "NewObject";
         Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> linkedList.set(testMessage, 101));
 
@@ -165,31 +168,31 @@ class LinkedListTest {
     }
 
     @Test
-    void set_SetFirst_True(){
+    void set_SetFirst_True() {
         String testMessage = "NewObject";
-        linkedList.set(testMessage,0);
+        linkedList.set(testMessage, 0);
         String expectedMessage = "[NewObject, 1, 2, 3, 4, 5, 6, null, 8]";
 
-        assertEquals(expectedMessage,linkedList.toString());
+        assertEquals(expectedMessage, linkedList.toString());
     }
 
     @Test
-    void set_SetMiddle_True(){
+    void set_SetMiddle_True() {
         String testMessage = "NewObject";
-        linkedList.set(testMessage,4);
+        linkedList.set(testMessage, 4);
 
         String expectedMessage = "[0, 1, 2, 3, NewObject, 5, 6, null, 8]";
 
-        assertEquals(expectedMessage,linkedList.toString());
+        assertEquals(expectedMessage, linkedList.toString());
     }
 
     @Test
-    void set_SetLast_True(){
+    void set_SetLast_True() {
         String testMessage = "NewObject";
-        linkedList.set(testMessage,8);
+        linkedList.set(testMessage, 8);
 
         String expectedMessage = "[0, 1, 2, 3, 4, 5, 6, null, NewObject]";
-        assertEquals(expectedMessage,linkedList.toString());
+        assertEquals(expectedMessage, linkedList.toString());
     }
 
     @Test
@@ -236,23 +239,23 @@ class LinkedListTest {
     }
 
     @Test
-    void indexOf_IndexOfFirst_True(){
+    void indexOf_IndexOfFirst_True() {
         assertEquals(0, linkedList.indexOf("0"));
     }
 
     @Test
-    void indexOf_IndexOfMiddle_True(){
+    void indexOf_IndexOfMiddle_True() {
         assertEquals(4, linkedList.indexOf("4"));
         assertEquals(7, linkedList.indexOf(null));
     }
 
     @Test
-    void indexOf_IndexOfLast_True(){
+    void indexOf_IndexOfLast_True() {
         assertEquals(8, linkedList.indexOf("8"));
     }
 
     @Test
-    void indexOf_NotPresent_True(){
+    void indexOf_NotPresent_True() {
         assertEquals(-1, linkedList.indexOf("NotPresent"));
     }
 
@@ -263,25 +266,26 @@ class LinkedListTest {
         assertEquals(6, linkedList.lastIndexOf("6"));
         assertEquals(4, linkedList.lastIndexOf("4"));
     }
+
     @Test
-    void lastIndexOf_LastIndexOfFirst_True(){
+    void lastIndexOf_LastIndexOfFirst_True() {
         assertEquals(0, linkedList.lastIndexOf("0"));
     }
 
     @Test
-    void lastIndexOf_LastIndexOfMiddle_True(){
+    void lastIndexOf_LastIndexOfMiddle_True() {
         assertEquals(6, linkedList.lastIndexOf("6"));
         assertEquals(4, linkedList.lastIndexOf("4"));
         assertEquals(7, linkedList.lastIndexOf(null));
     }
 
     @Test
-    void lastIndexOf_LastIndexOfLast_True(){
+    void lastIndexOf_LastIndexOfLast_True() {
         assertEquals(8, linkedList.lastIndexOf("8"));
     }
 
     @Test
-    void lastIndexOf_NotPresent_True(){
+    void lastIndexOf_NotPresent_True() {
         assertEquals(-1, linkedList.lastIndexOf("NotPresent"));
     }
 
@@ -290,4 +294,96 @@ class LinkedListTest {
         String expectedMessage = "[0, 1, 2, 3, 4, 5, 6, null, 8]";
         assertEquals(expectedMessage, linkedList.toString());
     }
+
+    @Test
+    void iteratorNext_TestNext_NextElement() {
+        var iterator = linkedList.iterator();
+        assertEquals("0",iterator.next());
+        assertEquals("1",iterator.next());
+        assertEquals("2",iterator.next());
+        assertEquals("3",iterator.next());
+        assertEquals("4",iterator.next());
+        assertEquals("5",iterator.next());
+        assertEquals("6",iterator.next());
+        assertNull(iterator.next());
+        assertEquals("8",iterator.next());
+        assertNull(iterator.next());
+        assertNull(iterator.next());
+        assertNull(iterator.next());
+        assertNull(iterator.next());
+    }
+
+    @Test
+    void hasNext_TestHasNextElement_True(){
+        var iterator = linkedList.iterator();
+        for (int i=0;i<linkedList.size()-1;i++){
+            assertTrue(iterator.hasNext());
+            iterator.next();
+        }
+    }
+
+    @Test
+    void hasNext_TestHasNotNextElement_False(){
+        LinkedList testList = new LinkedList();
+        testList.add(1);
+        testList.add(2);
+        var iterator = testList.iterator();
+
+        assertTrue(iterator.hasNext());
+        iterator.next();
+        assertFalse(iterator.hasNext());
+    }
+
+    @Test
+    void remove_RemoveFirstIterator_True(){
+        var iterator = linkedList.iterator();
+        iterator.remove();
+        String expectedMessage = "[1, 2, 3, 4, 5, 6, null, 8]";
+        assertEquals(expectedMessage, linkedList.toString());
+    }
+
+    @Test
+    void remove_RemoveMiddleIterator_True(){
+        var iterator = linkedList.iterator();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.remove();
+        String expectedMessage = "[0, 1, 2, 4, 5, 6, null, 8]";
+        assertEquals(expectedMessage, linkedList.toString());
+    }
+
+    @Test
+    void remove_RemoveLastIterator_True(){
+        var iterator = linkedList.iterator();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.remove();
+        String expectedMessage = "[0, 1, 2, 3, 4, 5, 6, null]";
+        assertEquals(expectedMessage, linkedList.toString());
+    }
+
+    @Test
+    void remove_RemoveNotExistenceIterator_True(){
+        var iterator = linkedList.iterator();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+        iterator.remove();
+        String expectedMessage = "[0, 1, 2, 3, 4, 5, 6, null, 8]";
+        assertEquals(expectedMessage, linkedList.toString());
+    }
+
 }
