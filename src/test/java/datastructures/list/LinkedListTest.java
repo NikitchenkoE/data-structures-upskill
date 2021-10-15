@@ -3,7 +3,7 @@ package datastructures.list;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -298,32 +298,48 @@ class LinkedListTest {
     @Test
     void iteratorNext_TestNext_NextElement() {
         var iterator = linkedList.iterator();
-        assertEquals("0",iterator.next());
-        assertEquals("1",iterator.next());
-        assertEquals("2",iterator.next());
-        assertEquals("3",iterator.next());
-        assertEquals("4",iterator.next());
-        assertEquals("5",iterator.next());
-        assertEquals("6",iterator.next());
+        assertEquals("0", iterator.next());
+        assertEquals("1", iterator.next());
+        assertEquals("2", iterator.next());
+        assertEquals("3", iterator.next());
+        assertEquals("4", iterator.next());
+        assertEquals("5", iterator.next());
+        assertEquals("6", iterator.next());
         assertNull(iterator.next());
-        assertEquals("8",iterator.next());
-        assertNull(iterator.next());
-        assertNull(iterator.next());
-        assertNull(iterator.next());
-        assertNull(iterator.next());
+        assertEquals("8", iterator.next());
     }
 
     @Test
-    void hasNext_TestHasNextElement_True(){
+    void iteratorNext_NoSuchElement_Exception() {
         var iterator = linkedList.iterator();
-        for (int i=0;i<linkedList.size()-1;i++){
+        assertEquals("0", iterator.next());
+        assertEquals("1", iterator.next());
+        assertEquals("2", iterator.next());
+        assertEquals("3", iterator.next());
+        assertEquals("4", iterator.next());
+        assertEquals("5", iterator.next());
+        assertEquals("6", iterator.next());
+        assertNull(iterator.next());
+        assertEquals("8", iterator.next());
+
+        Exception exception = assertThrows(NoSuchElementException.class, iterator::next);
+
+        String expectedMessage = "No such element";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void hasNext_TestHasNextElement_True() {
+        var iterator = linkedList.iterator();
+        for (int i = 0; i < linkedList.size() - 1; i++) {
             assertTrue(iterator.hasNext());
             iterator.next();
         }
     }
 
     @Test
-    void hasNext_TestHasNotNextElement_False(){
+    void hasNext_TestHasNotNextElement_False() {
         LinkedList testList = new LinkedList();
         testList.add(1);
         testList.add(2);
@@ -335,7 +351,7 @@ class LinkedListTest {
     }
 
     @Test
-    void remove_RemoveFirstIterator_True(){
+    void remove_RemoveFirstIterator_True() {
         var iterator = linkedList.iterator();
         iterator.remove();
         String expectedMessage = "[1, 2, 3, 4, 5, 6, null, 8]";
@@ -343,7 +359,7 @@ class LinkedListTest {
     }
 
     @Test
-    void remove_RemoveMiddleIterator_True(){
+    void remove_RemoveMiddleIterator_True() {
         var iterator = linkedList.iterator();
         iterator.next();
         iterator.next();
@@ -354,7 +370,7 @@ class LinkedListTest {
     }
 
     @Test
-    void remove_RemoveLastIterator_True(){
+    void remove_RemoveLastIterator_True() {
         var iterator = linkedList.iterator();
         iterator.next();
         iterator.next();
@@ -369,21 +385,5 @@ class LinkedListTest {
         assertEquals(expectedMessage, linkedList.toString());
     }
 
-    @Test
-    void remove_RemoveNotExistenceIterator_True(){
-        var iterator = linkedList.iterator();
-        iterator.next();
-        iterator.next();
-        iterator.next();
-        iterator.next();
-        iterator.next();
-        iterator.next();
-        iterator.next();
-        iterator.next();
-        iterator.next();
-        iterator.remove();
-        String expectedMessage = "[0, 1, 2, 3, 4, 5, 6, null, 8]";
-        assertEquals(expectedMessage, linkedList.toString());
-    }
 
 }

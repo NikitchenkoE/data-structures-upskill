@@ -1,6 +1,7 @@
 package datastructures.list;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class LinkedList implements List, Iterable {
@@ -203,18 +204,17 @@ public class LinkedList implements List, Iterable {
 
             @Override
             public Object next() {
-                if (current != null) {
-                    Object value = current.value;
-                    current = current.next;
-                    return value;
-                }
-                return null;
+                noSuchElement();
+
+                Object value = current.value;
+                current = current.next;
+                return value;
             }
 
             public void remove() {
-                if (current == null) {
-                    return;
-                } else if (current.prev == null) {
+                noSuchElement();
+
+                if (current.prev == null) {
                     head = current.next;
                     current.next.prev = null;
                     current = head;
@@ -229,6 +229,12 @@ public class LinkedList implements List, Iterable {
                     current = newCurrent;
                 }
                 size--;
+            }
+
+            private void noSuchElement() {
+                if (current == null) {
+                    throw new NoSuchElementException("No such element");
+                }
             }
         };
     }
