@@ -39,7 +39,7 @@ public class HashMap implements Map {
     public Object get(Object key) {
         keyNotNull(key);
         var bucket = buckets[findBucket(key)];
-        if (bucket==null){
+        if (bucket == null) {
             return null;
         }
         return findEntry(bucket, key);
@@ -61,14 +61,18 @@ public class HashMap implements Map {
     public Object remove(Object key) {
         keyNotNull(key);
         ArrayList bucket = buckets[findBucket(key)];
-        if (bucket==null){
+        if (bucket == null) {
             return null;
         }
         return deleteEntry(bucket, key);
     }
 
     private int findBucket(Object key) {
-        return key.hashCode() % buckets.length;
+        int bucketNumber = key.hashCode() % buckets.length;
+        if (bucketNumber<0){
+            return bucketNumber*-1;
+        }
+        return bucketNumber;
     }
 
     private Object findEntry(ArrayList<Entry> bucket, Object key) {
