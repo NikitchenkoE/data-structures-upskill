@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LinkedListTest {
-    LinkedList linkedList = new LinkedList();
+    LinkedList<String> linkedList = new LinkedList();
 
     @BeforeEach
     void before() {
@@ -33,15 +33,15 @@ class LinkedListTest {
 
     @Test
     void add_SizeChanged_True() {
-        linkedList.add(1);
-        linkedList.add(1);
-        linkedList.add(1);
+        linkedList.add("1");
+        linkedList.add("1");
+        linkedList.add("1");
         assertEquals(12, linkedList.size());
     }
 
     @Test
     void addNumberWithIndex_Exception_ExpectException() {
-        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> linkedList.add(101, 101));
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> linkedList.add("101", 101));
         String actualMessage = exception.getMessage();
         String expectedMessage = "Index < 0 and > size, size = 9";
         assertEquals(expectedMessage, actualMessage);

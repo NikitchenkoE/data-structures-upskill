@@ -4,47 +4,47 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class LinkedList implements List, Iterable {
-    private Node head;
-    private Node tail;
+public class LinkedList<T> implements List<T>, Iterable<T> {
+    private Node<T> head;
+    private Node<T> tail;
     private int size = 0;
 
     @Override
-    public void add(Object value) {
+    public void add(T value) {
         add(value, size);
     }
 
     @Override
-    public void add(Object value, int index) {
+    public void add(T value, int index) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException(String.format("Index < 0 and > size, size = %s", size));
         }
         if (head == null) {
-            head = tail = new Node(value, null, null);
+            head = tail = new Node<>(value, null, null);
             size++;
             return;
         } else if (head == tail) {
-            tail = new Node(value, head, null);
+            tail = new Node<>(value, head, null);
             head.next = tail;
             size++;
             return;
         } else if (index == size) {
-            Node newNode = new Node(value, tail, null);
+            Node<T> newNode = new Node<>(value, tail, null);
             tail.next = newNode;
             tail = newNode;
             size++;
             return;
         }
 
-        Node listObject = find(index);
+        Node<T> listObject = find(index);
 
         if (listObject == head) {
-            head = new Node(value, null, listObject);
+            head = new Node<>(value, null, listObject);
             listObject.prev = head;
             size++;
             return;
         } else if (listObject.prev != null) {
-            Node newNode = new Node(value, listObject.prev, listObject);
+            Node<T> newNode = new Node<>(value, listObject.prev, listObject);
             listObject.prev.next = newNode;
             listObject.prev = newNode;
         }
@@ -52,10 +52,10 @@ public class LinkedList implements List, Iterable {
     }
 
     @Override
-    public Object remove(int index) {
+    public T remove(int index) {
         exceptionChecker(index);
 
-        Node listObject = find(index);
+        Node<T> listObject = find(index);
         if (index == 0) {
             listObject.next.prev = null;
             head = listObject.next;
@@ -71,25 +71,25 @@ public class LinkedList implements List, Iterable {
     }
 
     @Override
-    public Object get(int index) {
+    public T get(int index) {
         exceptionChecker(index);
 
         return find(index).value;
     }
 
     @Override
-    public Object set(Object value, int index) {
+    public T set(T value, int index) {
         exceptionChecker(index);
 
         if (index <= size / 2) {
-            Node first = head;
+            Node<T> first = head;
             for (int i = 0; i < index; i++) {
                 first = first.next;
             }
             first.value = value;
             return first.value;
         } else {
-            Node last = tail;
+            Node<T> last = tail;
             for (int i = size - 1; i > index; i--) {
                 last = last.prev;
             }
@@ -116,8 +116,8 @@ public class LinkedList implements List, Iterable {
     }
 
     @Override
-    public boolean contains(Object value) {
-        Node first = head;
+    public boolean contains(T value) {
+        Node <T> first = head;
         for (int i = 0; i < size; i++) {
             if (first.value == value) {
                 return true;
@@ -128,9 +128,9 @@ public class LinkedList implements List, Iterable {
     }
 
     @Override
-    public int indexOf(Object value) {
+    public int indexOf(T value) {
         int index = 0;
-        for (Node thisNode = head; thisNode != null; index++) {
+        for (Node<T> thisNode = head; thisNode != null; index++) {
             if (Objects.equals(value, thisNode.value)) {
                 return index;
             }
@@ -140,9 +140,9 @@ public class LinkedList implements List, Iterable {
     }
 
     @Override
-    public int lastIndexOf(Object value) {
+    public int lastIndexOf(T value) {
         int index = size - 1;
-        for (Node thisNode = tail; thisNode != null; index--) {
+        for (Node<T> thisNode = tail; thisNode != null; index--) {
             if (Objects.equals(value, thisNode.value)) {
                 return index;
             }
@@ -153,7 +153,7 @@ public class LinkedList implements List, Iterable {
 
     @Override
     public String toString() {
-        Node first = head;
+        Node<T> first = head;
         int iMax = size - 1;
         if (iMax == -1)
             return "[]";
@@ -170,15 +170,15 @@ public class LinkedList implements List, Iterable {
         }
     }
 
-    private Node find(int index) {
+    private Node<T> find(int index) {
         if (index <= size / 2) {
-            Node first = head;
+            Node<T> first = head;
             for (int i = 0; i < index; i++) {
                 first = first.next;
             }
             return first;
         } else {
-            Node last = tail;
+            Node<T> last = tail;
             for (int i = size - 1; i > index; i--) {
                 last = last.prev;
             }
@@ -193,9 +193,9 @@ public class LinkedList implements List, Iterable {
     }
 
     @Override
-    public Iterator iterator() {
+    public Iterator<T> iterator() {
         return new Iterator() {
-            Node current = head;
+            Node<T> current = head;
 
             @Override
             public boolean hasNext() {
@@ -203,10 +203,10 @@ public class LinkedList implements List, Iterable {
             }
 
             @Override
-            public Object next() {
+            public T next() {
                 noSuchElement();
 
-                Object value = current.value;
+                T value = current.value;
                 current = current.next;
                 return value;
             }
@@ -223,7 +223,7 @@ public class LinkedList implements List, Iterable {
                     current.prev.next = null;
                     current = tail;
                 } else {
-                    Node newCurrent = current.next;
+                    Node<T> newCurrent = current.next;
                     current.prev.next = current.next;
                     current.next.prev = current.prev;
                     current = newCurrent;
@@ -241,17 +241,17 @@ public class LinkedList implements List, Iterable {
 }
 
 
-class Node {
-    Object value;
+class Node<T> {
+    T value;
 
-    Node prev;
-    Node next;
+    Node<T> prev;
+    Node<T> next;
 
-    public Node(Object value) {
+    public Node(T value) {
         this.value = value;
     }
 
-    public Node(Object value, Node prev, Node next) {
+    public Node(T value, Node<T> prev, Node<T> next) {
         this.value = value;
         this.prev = prev;
         this.next = next;
