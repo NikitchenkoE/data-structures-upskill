@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ArrayListTest {
 
-    private final ArrayList arrayList = new ArrayList(10);
+    private final ArrayList<String> arrayList = new ArrayList(10);
 
     @Test
     void add() {
@@ -135,19 +135,19 @@ class ArrayListTest {
     @Test
     void iteratorNext_findNextElement_true(){
         var iterator = arrayList.iterator();
-        arrayList.add(1);
-        arrayList.add(2);
-        arrayList.add(3);
-        assertEquals(1,iterator.next());
-        assertEquals(2,iterator.next());
-        assertEquals(3,iterator.next());
+        arrayList.add("A");
+        arrayList.add("B");
+        arrayList.add("C");
+        assertEquals("A",iterator.next());
+        assertEquals("B",iterator.next());
+        assertEquals("C",iterator.next());
     }
 
     @Test
     void iteratorNext_NoSuchElementExc_Exception(){
-        arrayList.add(1);
-        arrayList.add(1);
-        arrayList.add(1);
+        arrayList.add("1");
+        arrayList.add("1");
+        arrayList.add("1");
 
         var iterator = arrayList.iterator();
         iterator.next();
@@ -165,16 +165,16 @@ class ArrayListTest {
     @Test
     void iteratorHasNext_HasNextElement_True(){
         var iterator = arrayList.iterator();
-        arrayList.add(1);
-        arrayList.add(1);
+        arrayList.add("1");
+        arrayList.add("1");
         assertTrue(iterator.hasNext());
     }
 
     @Test
     void iteratorHasNotNext_HasNextElement_False(){
         var iterator = arrayList.iterator();
-        arrayList.add(1);
-        arrayList.add(1);
+        arrayList.add("1");
+        arrayList.add("1");
         iterator.next();
         assertFalse(iterator.hasNext());
     }
@@ -182,9 +182,9 @@ class ArrayListTest {
     @Test
     void iteratorRemove_RemoveFirstElement_True(){
         var iterator = arrayList.iterator();
-        arrayList.add(1);
-        arrayList.add(2);
-        arrayList.add(3);
+        arrayList.add("1");
+        arrayList.add("2");
+        arrayList.add("3");
         String expectedMessage = "[2, 3]";
         iterator.remove();
         assertEquals(expectedMessage,arrayList.toString());
@@ -193,9 +193,9 @@ class ArrayListTest {
     @Test
     void iteratorRemove_RemoveMiddleElement_True(){
         var iterator = arrayList.iterator();
-        arrayList.add(1);
-        arrayList.add(2);
-        arrayList.add(3);
+        arrayList.add("1");
+        arrayList.add("2");
+        arrayList.add("3");
         String expectedMessage = "[1, 3]";
         iterator.next();
         iterator.remove();
@@ -205,9 +205,9 @@ class ArrayListTest {
     @Test
     void iteratorRemove_RemoveLastElement_True(){
         var iterator = arrayList.iterator();
-        arrayList.add(1);
-        arrayList.add(2);
-        arrayList.add(3);
+        arrayList.add("1");
+        arrayList.add("2");
+        arrayList.add("3");
         String expectedMessage = "[1, 2]";
         iterator.next();
         iterator.next();

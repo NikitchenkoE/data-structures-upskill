@@ -4,21 +4,21 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ArrayList implements List,Iterable {
+public class ArrayList<T> implements List<T>,Iterable<T> {
     private static final int DEFAULT_CAPACITY = 16;
     private int size = 0;
-    private Object[] array;
+    private T[] array;
 
     public ArrayList() {
         this(DEFAULT_CAPACITY);
     }
 
     public ArrayList(int initCapacity) {
-        array = new Object[initCapacity];
+        array =(T[]) new Object[initCapacity];
     }
 
     @Override
-    public void add(Object value) {
+    public void add(T value) {
         if (size == array.length - 1) {
             growth();
         }
@@ -27,7 +27,7 @@ public class ArrayList implements List,Iterable {
     }
 
     @Override
-    public void add(Object value, int index) {
+    public void add(T value, int index) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException(String.format("Index < 0 and > size, size = %s", size));
         } else if (size == array.length - 1) {
@@ -39,7 +39,7 @@ public class ArrayList implements List,Iterable {
     }
 
     @Override
-    public Object get(int index) {
+    public T get(int index) {
         if (index < 0 || index > size - 1) {
             throw new IndexOutOfBoundsException(String.format("Index < 0 and > size-1, size-1 = %s", size - 1));
         }
@@ -47,11 +47,11 @@ public class ArrayList implements List,Iterable {
     }
 
     @Override
-    public Object set(Object value, int index) {
+    public T set(T value, int index) {
         if (index < 0 || index > size - 1) {
             throw new IndexOutOfBoundsException(String.format("Index < 0 and > size-1, size-1 = %s", size - 1));
         }
-        Object oldValue = array[index];
+        T oldValue = array[index];
         array[index] = value;
         return oldValue;
     }
@@ -126,13 +126,13 @@ public class ArrayList implements List,Iterable {
     }
 
     @Override
-    public Object remove(int index) {
+    public T remove(int index) {
         if (index < 0 || index > size - 1) {
             throw new IndexOutOfBoundsException(String.format("Index < 0 and > size-1, size-1 = %s", size - 1));
         }
         System.arraycopy(array, index + 1, array, index, array.length - 1 - index);
         size--;
-        return array;
+        return (T) array;
     }
 
     @Override
@@ -145,7 +145,7 @@ public class ArrayList implements List,Iterable {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append('[');
         for (int i = 0; ; i++) {
-            stringBuilder.append(String.valueOf(array[i]));
+            stringBuilder.append((array[i]));
             if (i == iMax)
                 return stringBuilder.append(']').toString();
             stringBuilder.append(", ");
@@ -153,13 +153,13 @@ public class ArrayList implements List,Iterable {
     }
 
     private void growth() {
-        Object[] newArray = new Object[array.length * 2];
+        T[] newArray = (T[]) new Object[array.length * 2];
         System.arraycopy(array, 0, newArray, 0, size);
         array = newArray;
     }
 
     @Override
-    public Iterator iterator() {
+    public Iterator<T> iterator() {
         return new Iterator(){
         int present=0;
             @Override
@@ -168,7 +168,7 @@ public class ArrayList implements List,Iterable {
             }
 
             @Override
-            public Object next() {
+            public T next() {
                 noSuchElement();
 
                     var value = array[present];
