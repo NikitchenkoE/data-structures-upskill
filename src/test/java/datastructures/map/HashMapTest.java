@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HashMapTest {
 
-    HashMap<Integer,Integer> hashMap = new HashMap();
+    HashMap<Integer, Integer> hashMap = new HashMap();
 
     @Test
     void put_ValueReturnedWhePut_True() {
@@ -107,7 +107,7 @@ class HashMapTest {
     }
 
     @Test
-    void get_NotPresentElement_Null(){
+    void get_NotPresentElement_Null() {
         assertNull(hashMap.get(1));
     }
 
@@ -218,7 +218,21 @@ class HashMapTest {
     }
 
     @Test
-    void remove_ReturnNullWhenRemoveNotPresentElement_Null(){
+    void remove_ReturnNullWhenRemoveNotPresentElement_Null() {
         assertNull(hashMap.remove(1));
+    }
+
+    @Test
+    void getFromDifferentPositions() {
+        for (int i = 0; i < 100000; i++) {
+            hashMap.put(i, i);
+            assertEquals(i, hashMap.get(i));
+        }
+
+        assertEquals(1, hashMap.get(1));
+        assertEquals(250, hashMap.get(250));
+        assertEquals(750, hashMap.get(750));
+        assertEquals(999, hashMap.get(999));
+
     }
 }
