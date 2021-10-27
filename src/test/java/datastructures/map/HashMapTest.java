@@ -122,22 +122,10 @@ class HashMapTest {
 
     @Test
     void containsKey_Contains_True() {
-        hashMap.put(1, 1);
-        hashMap.put(1, 1);
-        hashMap.put(2, 2);
-        hashMap.put(3, 3);
-        hashMap.put(3, 1500);
-        hashMap.put(12, null);
-        hashMap.put(4, 4);
-        hashMap.put(5, 5);
-        hashMap.put(6, 6);
-        hashMap.put(6, 1500);
-        hashMap.put(7, null);
-
-        assertTrue(hashMap.containsKey(1));
-        assertTrue(hashMap.containsKey(3));
-        assertTrue(hashMap.containsKey(5));
-        assertTrue(hashMap.containsKey(7));
+        for (int i = 0; i<10000;i++){
+            hashMap.put(i,i);
+            assertTrue(hashMap.containsKey(i));
+        }
     }
 
     @Test
@@ -233,6 +221,9 @@ class HashMapTest {
         assertEquals(250, hashMap.get(250));
         assertEquals(750, hashMap.get(750));
         assertEquals(999, hashMap.get(999));
+        assertEquals(1500, hashMap.get(1500));
+        assertEquals(8250, hashMap.get(8250));
+        assertEquals(99999, hashMap.get(99999));
 
     }
 }
