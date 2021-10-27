@@ -95,7 +95,7 @@ public class HashMap implements Map {
 
     private void setEntryPresent(ArrayList<Entry> bucket, Object key, Entry newEntry) {
         for (Entry entry : bucket) {
-            if (entry.getKey() == key) {
+            if (entry.getKey().equals(key)) {
                 bucket.remove(entry);
                 bucket.add(newEntry);
             }
@@ -104,7 +104,7 @@ public class HashMap implements Map {
 
     private Object deleteEntry(ArrayList<Entry> bucket, Object key) {
         for (Entry entry : bucket) {
-            if (entry.getKey() == key) {
+            if (entry.getKey().equals(key)) {
                 Object result = entry.getValue();
                 bucket.remove(entry);
                 return result;
