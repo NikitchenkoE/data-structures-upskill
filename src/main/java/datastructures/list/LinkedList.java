@@ -19,25 +19,18 @@ public class LinkedList<T> implements List<T>, Iterable<T> {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException(String.format("Index < 0 and > size, size = %s", size));
         }
+        Node<T> listObject = find(index);
+
         if (head == null) {
             head = tail = new Node<>(value, null, null);
-            size++;
-            return;
         } else if (index == size) {
             Node<T> newNode = new Node<>(value, tail, null);
             tail.next = newNode;
             tail = newNode;
-            size++;
-            return;
-        }
-
-        Node<T> listObject = find(index);
-
-        if (listObject == head) {
+        } else if (listObject == head) {
             head = new Node<>(value, null, listObject);
             listObject.prev = head;
-            size++;
-            return;
+
         } else if (listObject.prev != null) {
             Node<T> newNode = new Node<>(value, listObject.prev, listObject);
             listObject.prev.next = newNode;
