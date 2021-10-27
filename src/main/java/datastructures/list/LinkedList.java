@@ -23,11 +23,6 @@ public class LinkedList<T> implements List<T>, Iterable<T> {
             head = tail = new Node<>(value, null, null);
             size++;
             return;
-        } else if (head == tail) {
-            tail = new Node<>(value, head, null);
-            head.next = tail;
-            size++;
-            return;
         } else if (index == size) {
             Node<T> newNode = new Node<>(value, tail, null);
             tail.next = newNode;
@@ -117,7 +112,7 @@ public class LinkedList<T> implements List<T>, Iterable<T> {
 
     @Override
     public boolean contains(T value) {
-        Node <T> first = head;
+        Node<T> first = head;
         for (int i = 0; i < size; i++) {
             if (first.value == value) {
                 return true;
