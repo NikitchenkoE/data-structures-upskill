@@ -33,7 +33,6 @@ public class HashMap<K, V> implements Map<K, V> {
             setEntryPresent(bucket, key, entry);
         } else {
             bucket.add(entry);
-            buckets[bucketNumber] = bucket;
             size++;
         }
         return value;
