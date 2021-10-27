@@ -69,16 +69,16 @@ public class HashMap implements Map {
 
     private int findBucket(Object key) {
         int bucketNumber = key.hashCode() % buckets.length;
-        if (bucketNumber<0){
-            return bucketNumber*-1;
+        if (bucketNumber < 0) {
+            return bucketNumber * -1;
         }
         return bucketNumber;
     }
 
     private Object findEntry(ArrayList<Entry> bucket, Object key) {
         for (Entry entry : bucket) {
-            if (entry.key == key) {
-                return entry.value;
+            if (entry.getKey() == key) {
+                return entry.getValue();
             }
         }
         return null;
@@ -86,7 +86,7 @@ public class HashMap implements Map {
 
     private boolean entryPresent(ArrayList<Entry> bucket, Object key) {
         for (Entry entry : bucket) {
-            if (entry.key == key) {
+            if (entry.getKey() == key) {
                 return true;
             }
         }
@@ -95,7 +95,7 @@ public class HashMap implements Map {
 
     private void setEntryPresent(ArrayList<Entry> bucket, Object key, Entry newEntry) {
         for (Entry entry : bucket) {
-            if (entry.key == key) {
+            if (entry.getKey() == key) {
                 bucket.remove(entry);
                 bucket.add(newEntry);
             }
@@ -104,8 +104,8 @@ public class HashMap implements Map {
 
     private Object deleteEntry(ArrayList<Entry> bucket, Object key) {
         for (Entry entry : bucket) {
-            if (entry.key == key) {
-                Object result = entry.value;
+            if (entry.getKey() == key) {
+                Object result = entry.getValue();
                 bucket.remove(entry);
                 return result;
             }
@@ -121,8 +121,16 @@ public class HashMap implements Map {
 }
 
 class Entry {
-    Object key;
-    Object value;
+    private final Object key;
+    private Object value;
+
+    public Object getKey() {
+        return key;
+    }
+
+    public Object getValue() {
+        return value;
+    }
 
     public Entry(Object key, Object value) {
         this.key = key;
