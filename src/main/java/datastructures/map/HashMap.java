@@ -3,12 +3,12 @@ package datastructures.map;
 
 import java.util.ArrayList;
 
-public class HashMap implements Map {
-    private ArrayList[] buckets;
+public class HashMap<K,V> implements Map<K,V> {
+    private final ArrayList<Entry<K,V>>[] buckets;
     private int size = 0;
 
     public HashMap() {
-        this.buckets = new ArrayList[10];
+        buckets = new ArrayList[10];
     }
 
     public HashMap(int size) {
@@ -16,13 +16,13 @@ public class HashMap implements Map {
     }
 
     @Override
-    public Object put(Object key, Object value) {
+    public V put(K key, V value) {
         keyNotNull(key);
 
-        Entry entry = new Entry(key, value);
-        ArrayList bucket = buckets[findBucket(key)];
+        Entry<K,V> entry = new Entry<>(key, value);
+        ArrayList<Entry<K,V>> bucket = buckets[findBucket(key)];
         if (bucket == null) {
-            bucket = new ArrayList();
+            bucket = new ArrayList<>();
             bucket.add(entry);
             buckets[findBucket(key)] = bucket;
             size++;
@@ -36,7 +36,7 @@ public class HashMap implements Map {
     }
 
     @Override
-    public Object get(Object key) {
+    public V get(K key) {
         keyNotNull(key);
         var bucket = buckets[findBucket(key)];
         if (bucket == null) {
@@ -51,23 +51,23 @@ public class HashMap implements Map {
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsKey(K key) {
         keyNotNull(key);
-        ArrayList bucket = buckets[findBucket(key)];
+        ArrayList<Entry<K,V>> bucket = buckets[findBucket(key)];
         return entryPresent(bucket, key);
     }
 
     @Override
-    public Object remove(Object key) {
+    public V remove(K key) {
         keyNotNull(key);
-        ArrayList bucket = buckets[findBucket(key)];
+        ArrayList<Entry<K,V>> bucket = buckets[findBucket(key)];
         if (bucket == null) {
             return null;
         }
         return deleteEntry(bucket, key);
     }
 
-    private int findBucket(Object key) {
+    private int findBucket(K key) {
         int bucketNumber = key.hashCode() % buckets.length;
         if (bucketNumber < 0) {
             return bucketNumber * -1;
@@ -75,8 +75,8 @@ public class HashMap implements Map {
         return bucketNumber;
     }
 
-    private Object findEntry(ArrayList<Entry> bucket, Object key) {
-        for (Entry entry : bucket) {
+    private V findEntry(ArrayList<Entry<K,V>> bucket, K key) {
+        for (Entry<K,V> entry : bucket) {
             if (entry.getKey() == key) {
                 return entry.getValue();
             }
@@ -84,8 +84,8 @@ public class HashMap implements Map {
         return null;
     }
 
-    private boolean entryPresent(ArrayList<Entry> bucket, Object key) {
-        for (Entry entry : bucket) {
+    private boolean entryPresent(ArrayList<Entry<K,V>> bucket, K key) {
+        for (Entry<K,V> entry : bucket) {
             if (entry.getKey() == key) {
                 return true;
             }
@@ -93,8 +93,8 @@ public class HashMap implements Map {
         return false;
     }
 
-    private void setEntryPresent(ArrayList<Entry> bucket, Object key, Entry newEntry) {
-        for (Entry entry : bucket) {
+    private void setEntryPresent(ArrayList<Entry<K,V>> bucket, K key, Entry<K,V> newEntry) {
+        for (Entry<K,V> entry : bucket) {
             if (entry.getKey().equals(key)) {
                 bucket.remove(entry);
                 bucket.add(newEntry);
@@ -102,10 +102,10 @@ public class HashMap implements Map {
         }
     }
 
-    private Object deleteEntry(ArrayList<Entry> bucket, Object key) {
-        for (Entry entry : bucket) {
+    private V deleteEntry(ArrayList<Entry<K,V>> bucket, K key) {
+        for (Entry<K,V> entry : bucket) {
             if (entry.getKey().equals(key)) {
-                Object result = entry.getValue();
+                var result = entry.getValue();
                 bucket.remove(entry);
                 return result;
             }
@@ -113,26 +113,26 @@ public class HashMap implements Map {
         return null;
     }
 
-    private void keyNotNull(Object key) {
+    private void keyNotNull(K key) {
         if (key == null) {
             throw new NullPointerException("Key shouldn`t be equal null");
         }
     }
 }
 
-class Entry {
-    private final Object key;
-    private Object value;
+class Entry<K,V> {
+    private final K key;
+    private final V value;
 
-    public Object getKey() {
+    public K getKey() {
         return key;
     }
 
-    public Object getValue() {
+    public V getValue() {
         return value;
     }
 
-    public Entry(Object key, Object value) {
+    public Entry(K key, V value) {
         this.key = key;
         this.value = value;
     }

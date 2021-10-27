@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HashMapTest {
 
-    HashMap hashMap = new HashMap();
+    HashMap<Integer,Integer> hashMap = new HashMap();
 
     @Test
     void put_ValueReturnedWhePut_True() {
