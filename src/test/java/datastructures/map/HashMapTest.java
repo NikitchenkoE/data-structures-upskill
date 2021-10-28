@@ -122,8 +122,8 @@ class HashMapTest {
 
     @Test
     void containsKey_Contains_True() {
-        for (int i = 0; i<10000;i++){
-            hashMap.put(i,i);
+        for (int i = 0; i < 10000; i++) {
+            hashMap.put(i, i);
             assertTrue(hashMap.containsKey(i));
         }
     }
@@ -214,16 +214,71 @@ class HashMapTest {
     void getFromDifferentPositions() {
         for (int i = 0; i < 100000; i++) {
             hashMap.put(i, i);
-            assertEquals(i, hashMap.get(i));
         }
 
-        assertEquals(1, hashMap.get(1));
-        assertEquals(250, hashMap.get(250));
-        assertEquals(750, hashMap.get(750));
-        assertEquals(999, hashMap.get(999));
-        assertEquals(1500, hashMap.get(1500));
-        assertEquals(8250, hashMap.get(8250));
-        assertEquals(99999, hashMap.get(99999));
-
+        for (int i = 0; i < 100000; i++) {
+            assertEquals(i, hashMap.get(i));
+        }
     }
+
+    @Test
+    public void testHasNext_ReturnTrueIfHaz_TestHas() {
+        hashMap.put(1, 1);
+        hashMap.put(2, 2);
+        hashMap.put(3, 3);
+
+        var iterator = hashMap.iterator();
+
+        assertTrue(iterator.hasNext());
+        iterator.next();
+        assertTrue(iterator.hasNext());
+        iterator.next();
+        assertTrue(iterator.hasNext());
+        iterator.next();
+        assertFalse(iterator.hasNext());
+    }
+
+    @Test
+    public void testNext_ReturnNextEntry_Entry() {
+        hashMap.put(1, 1);
+        hashMap.put(2, 2);
+        hashMap.put(3, 3);
+        var iterator = hashMap.iterator();
+        assertEquals(1, iterator.next().getValue());
+        assertEquals(2, iterator.next().getValue());
+        assertEquals(3, iterator.next().getValue());
+    }
+
+    @Test
+    public void testNext_ReturnIndexOutOfBoundIfHastNextValue() {
+        hashMap.put(1, 1);
+        hashMap.put(2, 2);
+        hashMap.put(3, 3);
+
+        var iterator = hashMap.iterator();
+        iterator.next();
+        iterator.next();
+        iterator.next();
+
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, iterator::next);
+        String expectedMessage = "The next item does not exist";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testRemove_RemovePresentEntryFromHashMap() {
+        hashMap.put(1, 1);
+        hashMap.put(2, 2);
+        hashMap.put(3, 3);
+
+        var iterator = hashMap.iterator();
+        iterator.remove();
+
+        String expected = "[Key = 2, Value = 2], [Key = 3, Value = 3]";
+        String actual = hashMap.toString();
+        assertEquals(expected, actual);
+    }
+
+
 }

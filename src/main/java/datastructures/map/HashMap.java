@@ -2,8 +2,10 @@ package datastructures.map;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.StringJoiner;
 
-public class HashMap<K, V> implements Map<K, V> {
+public class HashMap<K, V> implements Map<K, V>, Iterable<Entry<K, V>> {
     private ArrayList<Entry<K, V>>[] buckets;
     private int size = 0;
 
@@ -70,10 +72,20 @@ public class HashMap<K, V> implements Map<K, V> {
         return deleteEntry(bucket, key);
     }
 
+    @Override
+    public String toString() {
+        ArrayList<Entry<K, V>> entries = doEntryList();
+        StringJoiner stringJoiner = new StringJoiner(", ");
+        for (Entry<K, V> entry : entries) {
+            stringJoiner.add(String.format("[Key = %s, Value = %s]", entry.getKey(), entry.getValue()));
+        }
+        return stringJoiner.toString();
+    }
+
     private int findBucket(K key) {
         int bucketNumber = key.hashCode() % buckets.length;
         if (bucketNumber < 0) {
-            return bucketNumber * -1;
+            return bucketNumber * (-1);
         }
         return bucketNumber;
     }
@@ -81,7 +93,7 @@ public class HashMap<K, V> implements Map<K, V> {
     private int findNewBucket(K key, int length) {
         int bucketNumber = key.hashCode() % length;
         if (bucketNumber < 0) {
-            return bucketNumber * -1;
+            return bucketNumber * (-1);
         }
         return bucketNumber;
     }
@@ -132,22 +144,56 @@ public class HashMap<K, V> implements Map<K, V> {
 
     private void grow() {
         ArrayList<Entry<K, V>>[] newBuckets = new ArrayList[size * 2];
-        for (int i = 0; i < size; i++) {
+        ArrayList<Entry<K, V>> entries = doEntryList();
+        buckets = newBuckets;
+        for (Entry<K, V> entry : entries) {
+            put(entry.getKey(), entry.getValue());
+            size--;
+        }
+    }
+
+    private ArrayList<Entry<K, V>> doEntryList() {
+        ArrayList<Entry<K, V>> entryList = new ArrayList<>();
+        for (int i = 0; i <= size; i++) {
             ArrayList<Entry<K, V>> thisBucket = buckets[i];
             if (thisBucket != null) {
-                for (Entry<K, V> entry : thisBucket) {
-                    ArrayList<Entry<K, V>> bucket = newBuckets[findNewBucket(entry.getKey(), newBuckets.length)];
-                    if (bucket == null) {
-                        bucket = new ArrayList<>();
-                        bucket.add(entry);
-                        newBuckets[findNewBucket(entry.getKey(), newBuckets.length)] = bucket;
-                    } else {
-                        bucket.add(entry);
-                    }
-                }
+                entryList.addAll(thisBucket);
             }
         }
-        buckets = newBuckets;
+        return entryList;
+    }
+
+    @Override
+    public Iterator<Entry<K, V>> iterator() {
+        return new Iterator<>() {
+            private final ArrayList<Entry<K, V>> entryArrayList = doEntryList();
+            private int iterator = 0;
+
+            @Override
+            public boolean hasNext() {
+                int thisPosition = iterator;
+                if (entryArrayList.size() <= iterator) {
+                    return false;
+                } else
+                    return entryArrayList.get(thisPosition++) != null;
+            }
+
+            @Override
+            public Entry<K, V> next() {
+                if (entryArrayList.size() <= iterator) {
+                    throw new IndexOutOfBoundsException("The next item does not exist");
+                }
+                var result = entryArrayList.get(iterator);
+                iterator++;
+                return result;
+            }
+
+            @Override
+            public void remove() {
+                HashMap.this.remove(entryArrayList.get(iterator).getKey());
+                entryArrayList.remove(iterator);
+            }
+        };
     }
 }
 
