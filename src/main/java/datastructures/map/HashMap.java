@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.StringJoiner;
 
-public class HashMap<K, V> implements Map<K, V>, Iterable<Entry<K, V>> {
+public class HashMap<K, V> implements Map<K, V>, Iterable<HashMap<K,V>.Entry<K, V>> {
     private ArrayList<Entry<K, V>>[] buckets;
     private int size = 0;
 
@@ -164,53 +164,69 @@ public class HashMap<K, V> implements Map<K, V>, Iterable<Entry<K, V>> {
     }
 
     @Override
-    public Iterator<Entry<K, V>> iterator() {
+    public Iterator<HashMap<K, V>.Entry<K, V>> iterator() {
         return new Iterator<>() {
-            private final ArrayList<Entry<K, V>> entryArrayList = doEntryList();
             private int iterator = 0;
+            private int bucketIterator = 0;
+            private int count = 0;
+            private Entry<K, V> thisEntry;
 
             @Override
             public boolean hasNext() {
-                int thisPosition = iterator;
-                if (entryArrayList.size() <= iterator) {
-                    return false;
-                } else
-                    return entryArrayList.get(thisPosition++) != null;
+                return count < size;
             }
 
             @Override
             public Entry<K, V> next() {
-                if (entryArrayList.size() <= iterator) {
+                Entry<K, V> entry = null;
+                for (int i = iterator; i < buckets.length; i++) {
+                    ArrayList<Entry<K, V>> bucket = buckets[i];
+                    if (bucket != null && bucketIterator < bucket.size()) {
+                        for (int t = bucketIterator; t < bucket.size(); t++) {
+                            if (bucket.get(t) != null) {
+                                entry = bucket.get(t);
+                                thisEntry = entry;
+                                bucketIterator++;
+                                count++;
+                                break;
+                            }
+                        }
+                        break;
+                    } else {
+                        iterator++;
+                        bucketIterator = 0;
+                    }
+                }
+                if (entry == null) {
                     throw new IndexOutOfBoundsException("The next item does not exist");
                 }
-                var result = entryArrayList.get(iterator);
-                iterator++;
-                return result;
+
+                return entry;
             }
 
             @Override
             public void remove() {
-                HashMap.this.remove(entryArrayList.get(iterator).getKey());
-                entryArrayList.remove(iterator);
+                var bucket = buckets[iterator];
+                bucket.remove(thisEntry);
             }
         };
     }
-}
 
-class Entry<K, V> {
-    private final K key;
-    private final V value;
+    class Entry<K, V> {
+        private final K key;
+        private final V value;
 
-    public K getKey() {
-        return key;
-    }
+        public K getKey() {
+            return key;
+        }
 
-    public V getValue() {
-        return value;
-    }
+        public V getValue() {
+            return value;
+        }
 
-    public Entry(K key, V value) {
-        this.key = key;
-        this.value = value;
+        public Entry(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
     }
 }

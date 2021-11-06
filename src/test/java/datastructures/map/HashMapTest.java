@@ -273,6 +273,7 @@ class HashMapTest {
         hashMap.put(3, 3);
 
         var iterator = hashMap.iterator();
+        iterator.next();
         iterator.remove();
 
         String expected = "[Key = 2, Value = 2], [Key = 3, Value = 3]";
