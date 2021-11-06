@@ -190,11 +190,11 @@ class HashMapTest {
 
     @Test
     void getFromDifferentPositions() {
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 1000; i++) {
             hashMap.put(i, i);
         }
 
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 1000; i++) {
             assertEquals(i, hashMap.get(i));
         }
     }

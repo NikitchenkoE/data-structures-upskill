@@ -23,6 +23,7 @@ public class HashMap<K, V> implements Map<K, V>, Iterable<HashMap<K, V>.Entry<K,
         if (size > buckets.length * 0.75) {
             grow();
         }
+        V returnValue = null;
         Entry<K, V> entry = new Entry<>(key, value);
         int bucketNumber = findBucket(key);
         ArrayList<Entry<K, V>> bucket = buckets[bucketNumber];
@@ -31,13 +32,15 @@ public class HashMap<K, V> implements Map<K, V>, Iterable<HashMap<K, V>.Entry<K,
             bucket.add(entry);
             buckets[bucketNumber] = bucket;
             size++;
-        } else if (entryPresent(bucket, key)) {
-            setEntryPresent(bucket, key, entry);
+        } else if (entryPresent(key)) {
+            var presentEntry = findEntry(entry.key);
+            presentEntry.value = value;
+            returnValue = value;
         } else {
             bucket.add(entry);
             size++;
         }
-        return value;
+        return returnValue;
     }
 
     @Override
@@ -46,7 +49,7 @@ public class HashMap<K, V> implements Map<K, V>, Iterable<HashMap<K, V>.Entry<K,
         if (bucket == null) {
             return null;
         }
-        return findEntry(bucket, key);
+        return findEntry(key).value;
     }
 
     @Override
@@ -60,24 +63,35 @@ public class HashMap<K, V> implements Map<K, V>, Iterable<HashMap<K, V>.Entry<K,
         if (bucket == null) {
             return false;
         } else {
-            return entryPresent(bucket, key);
+            return entryPresent(key);
         }
     }
 
     @Override
     public V remove(K key) {
         ArrayList<Entry<K, V>> bucket = buckets[findBucket(key)];
+        Entry<K, V> entry = new Entry<>(null, null);
+
         if (bucket == null) {
             return null;
         }
-        return deleteEntry(bucket, key);
+
+        var iterator = iterator();
+        while (iterator.hasNext()) {
+            entry = iterator.next();
+            if (Objects.equals(entry.key, key)) {
+                iterator.remove();
+                break;
+            }
+        }
+
+        return entry.value;
     }
 
     @Override
     public String toString() {
-        ArrayList<Entry<K, V>> entries = doEntryList();
         StringJoiner stringJoiner = new StringJoiner(", ");
-        for (Entry<K, V> entry : entries) {
+        for (Entry<K, V> entry : this) {
             stringJoiner.add(String.format("[Key = %s, Value = %s]", entry.getKey(), entry.getValue()));
         }
         return stringJoiner.toString();
@@ -103,44 +117,31 @@ public class HashMap<K, V> implements Map<K, V>, Iterable<HashMap<K, V>.Entry<K,
         } else return 0;
     }
 
-    private V findEntry(ArrayList<Entry<K, V>> bucket, K key) {
-        for (Entry<K, V> entry : bucket) {
-            if (Objects.equals(entry.getKey(), key)) {
-                return entry.getValue();
+    private Entry<K, V> findEntry(K key) {
+        var iterator = iterator();
+        Entry<K, V> entry = new Entry<>(null, null);
+        while (iterator.hasNext()) {
+            var presentEntry = iterator.next();
+            if (Objects.equals(presentEntry.key, key)) {
+                entry = presentEntry;
+                break;
             }
         }
-        return null;
+        return entry;
     }
 
-    private boolean entryPresent(ArrayList<Entry<K, V>> bucket, K key) {
-        for (Entry<K, V> entry : bucket) {
-            if (Objects.equals(entry.getKey(), key)) {
-                return true;
+    private boolean entryPresent(K key) {
+        var iterator = iterator();
+        boolean result = false;
+        while (iterator.hasNext()) {
+            var entry = iterator.next();
+            if (Objects.equals(key, entry.key)) {
+                result = true;
+                break;
             }
         }
-        return false;
+        return result;
     }
-
-    private void setEntryPresent(ArrayList<Entry<K, V>> bucket, K key, Entry<K, V> newEntry) {
-        for (Entry<K, V> entry : bucket) {
-            if (Objects.equals(entry.getKey(), key)) {
-                bucket.remove(entry);
-                bucket.add(newEntry);
-            }
-        }
-    }
-
-    private V deleteEntry(ArrayList<Entry<K, V>> bucket, K key) {
-        for (Entry<K, V> entry : bucket) {
-            if (Objects.equals(entry.getKey(), key)) {
-                var result = entry.getValue();
-                bucket.remove(entry);
-                return result;
-            }
-        }
-        return null;
-    }
-
 
     private void grow() {
         ArrayList<Entry<K, V>>[] newBuckets = new ArrayList[size * 2];
@@ -156,17 +157,6 @@ public class HashMap<K, V> implements Map<K, V>, Iterable<HashMap<K, V>.Entry<K,
             bucket.add(entry);
         }
         buckets = newBuckets;
-    }
-
-    private ArrayList<Entry<K, V>> doEntryList() {
-        ArrayList<Entry<K, V>> entryList = new ArrayList<>();
-        for (int i = 0; i <= size; i++) {
-            ArrayList<Entry<K, V>> thisBucket = buckets[i];
-            if (thisBucket != null) {
-                entryList.addAll(thisBucket);
-            }
-        }
-        return entryList;
     }
 
     @Override
@@ -214,13 +204,14 @@ public class HashMap<K, V> implements Map<K, V>, Iterable<HashMap<K, V>.Entry<K,
             public void remove() {
                 var bucket = buckets[iterator];
                 bucket.remove(thisEntry);
+                size--;
             }
         };
     }
 
     class Entry<K, V> {
         private final K key;
-        private final V value;
+        private V value;
 
         public K getKey() {
             return key;
